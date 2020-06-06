@@ -4,7 +4,9 @@
   "description": "MVP Project HRSF127",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/index.js",
+    "react-dev": "webpack -d --watch"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,21 @@
   "bugs": {
     "url": "https://github.com/eggtart26/MVP/issues"
   },
-  "homepage": "https://github.com/eggtart26/MVP#readme"
+  "homepage": "https://github.com/eggtart26/MVP#readme",
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^3.3.7",
+    "express": "^4.15.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "underscore": "^1.8.3"
+  }
 }
