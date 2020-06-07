@@ -1,7 +1,9 @@
 import React from 'react';
 import Input from './Input.jsx';
+import axios from 'axios';
 // import UploadImage from './UploadImage.jsx';
-// import analyzeImage from './analyzeImage.js'
+// import analyzeImage from '../analyzeImage.js'
+// const { analyzeImage } = require('../analyzeImage.js')
 
 
 class App extends React.Component {
@@ -9,13 +11,28 @@ class App extends React.Component {
         super(props);
         this.state = {
             isFood: false,
-            foodItems: ['apple'],
+            foodItems: [],
         }
         // this.handleClick = this.handleClick.bind(this)
     }
-// handleClick () {
-//     analyzeImage ()
-// }
+    // handleError(error) {
+    //     console.log(error);
+    //   }
+
+    // getAnalyze() {
+    //     axios.get('/')
+    //       .then(({ data }) => {
+    //         console.log(data,'foodItems')
+    //         this.setState({
+    //           foodItems: data,
+    //         });
+    //       })
+    //       .catch(this.handleError);
+    //   }
+
+    //   componentDidMount() {
+    //     this.getAnalyze();
+    //   }
 
 
     render() {
