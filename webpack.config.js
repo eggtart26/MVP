@@ -5,11 +5,7 @@ var DIST_DIR = path.join(__dirname, '/client/dist');
 module.exports = {
   // target: 'node',
   // node: {
-  //   dgram: 'empty',
   //   fs: 'empty',
-  //   net: 'empty',
-  //   tls: 'empty',
-  //   child_process: 'empty',
   // },
   entry: `${SRC_DIR}/index.jsx`,
   output: {
@@ -29,3 +25,29 @@ module.exports = {
     ]
   }
 };
+
+
+
+// module.exports = {
+//   entry: '${SRC_DIR}/index.jsx',
+//   output: {
+//     path: DIST_DIR
+//     filename: 'bundle.js'
+//   },
+//   resolve: {
+//     extensions: ['', '.js', '.jsx']
+//   },
+//   module: {
+//     loaders: [
+//       {
+//         test: /\.jsx?$/,
+//         loader: 'babel',
+//         exclude: /node_modules/,
+//         query: {
+//           cacheDirectory: true,
+//           presets: ['react', 'es2015']
+//         }
+//       }
+//     ]
+//   }
+// }

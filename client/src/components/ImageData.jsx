@@ -17,7 +17,7 @@ class ImageData extends React.Component {
     render() {
         return (
             <div>
-            From ImageData
+            
             </div>
         )
     }

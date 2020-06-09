@@ -221,10 +221,11 @@ const UploadImage = () => {
     const [message, setMessage] = useState('');
 
     const onChange = e => {
+      console.log(e.target)
       setFile(e.target.files[0]);
       setFilename(e.target.files[0].name);
     };
-  
+  console.log('file',file)
     const onSubmit = async e => {
       e.preventDefault();
       const formData = new FormData();
@@ -236,12 +237,12 @@ const UploadImage = () => {
             'Content-Type': 'multipart/form-data'
           },
 
-        });
-  
+        }); 
+
         const { fileName, filePath } = res.data;
-  
+        
         setUploadedFile({ fileName, filePath });
-  
+   
         setMessage('File Uploaded');
       } catch (err) {
         if (err.response.status === 500) {

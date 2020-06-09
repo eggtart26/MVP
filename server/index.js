@@ -1,68 +1,149 @@
 const express = require('express');
 const app = express();
 const cors = require('cors')
-// const pool = require('../database/index')
 const path = require('path');
-// const expressStaticGzip = require('express-static-gzip')
 const fileUpload = require('express-fileupload');
+const redis = require('redis');
+var YouTube = require('youtube-node');
+var _ = require('underscore')
 
-const PORT = 3050;
+// const PORT = 3050;
+const PORT = process.env.PORT || 3050;
+
+const REDIS_PORT = process.env.PORT || 6379;
+const clientData = redis.createClient(REDIS_PORT);
+
 app.use(express.static(path.join(__dirname, '../client/dist')))
 //middleware
+
 app.use(cors());  //need npm i cors
 app.use(express.json())
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-     next();
+  next();
 });
 
-app.use(fileUpload());
+// Cache middleware
+cache = (req, res, next) => {
+  clientData.get(req.params.id, (err, data) => {
+    console.log(req.params);
+    if (err) throw err;
+    if (data !== null) {
+      res.send(data);
+    } else {
+      next();
+    }
+  });
+};
 
+
+app.use(fileUpload());
 app.post('/upload', (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: 'No file uploaded' });
   }
-
   const file = req.files.file;
-
-  file.mv(`${__dirname}/uploads/${file.name}`, err => {
+  file.mv(`${__dirname}/uploads/01.jpeg`, err => {
     if (err) {
       console.error(err);
       return res.status(500).send(err);
     }
-
-    res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+    res.json({ fileName: '01.jpeg', filePath: `/uploads/01.jpeg` });
   });
+
+  const filePath = `${__dirname}/uploads/01.jpeg`;
+  analyzeImage(filePath);
+
 });
 
 
 
+// // google vision #1 Label working
+// const vision = require('@google-cloud/vision');
+// // Creates a client
+// var analyzeImage = function(filePath) {
+//   let id = 0;
+// const client = new vision.ImageAnnotatorClient({
+//   keyFilename: "Vision IA-61a490ae8870.json"
+// });
+// // Performs label detection on the image file
+// data = (
+// client
+//   .labelDetection(filePath)
+//   .then(results => {
+//     console.log(results)
+//         const labels = results[0].labelAnnotations;
+//         console.log('Labels:');
+//         const fruitArr = labels.map(label => label.description);
+//         console.log('arr',fruitArr);
+//         clientData.setex(id, 300, JSON.stringify(fruitArr));
+//         app.get('/data/:id', cache, (req, res) => {
+//           res.send(fruitArr);
+//         })
+//   })
+//   .catch(err => {
+//     console.error('ERROR:', err);
+//   })
+// )
+// }
 
-// app.use('/', expressStaticGzip(path.join(__dirname, '../client/dist')))
 
-
-
-
+// // google vision #2 Object name working
 const vision = require('@google-cloud/vision');
-// Creates a client
-const client = new vision.ImageAnnotatorClient({
-  keyFilename: "Vision IA-61a490ae8870.json"
-});
-// Performs label detection on the image file
-client
-  .labelDetection('/Users/justinguan/Desktop/HR/HRSF127/projects/MVP/server/uploads/01.jpeg')
-    .then(results => {
-        const labels = results[0].labelAnnotations;
-        console.log('Labels:');
-        data = labels.forEach(label => console.log(label.description));
-  })
-  .catch(err => {
-    console.error('ERROR:', err);
+
+var analyzeImage = async function (filePath) {
+  let id = 0;
+  const client = new vision.ImageAnnotatorClient({
+    keyFilename: "Vision IA-61a490ae8870.json"
   });
 
+  const [result] = await client.objectLocalization(filePath);
+  const objects = result.localizedObjectAnnotations;
+  objects.forEach(object => {
+    // console.log(object.name)
+    const foodsArr = objects.map(object => object.name)
+    // console.log(foodsArr)
+    const uniqueFood = _.uniq(foodsArr)
+    console.log(uniqueFood)
+
+    clientData.setex(id, 300, JSON.stringify(uniqueFood));
+    app.get('/data/:id', cache, (req, res) => {
+      res.send(uniqueFood);
+    })
 
 
+
+    var youTube = new YouTube();
+    let keyword = uniqueFood.slice(0, 3) + ' cook recipe';
+    console.log("keyword", keyword)
+
+    youTube.setKey('AIzaSyAEJtCZ5aO6yxz8MZdl6tl92zUoc0UsJk4');
+
+    youTube.search(keyword, 2, function (error, result) {
+      if (error) {
+        console.log(error);
+      }
+      else {
+        data = JSON.stringify(result.items[0].id.videoId, null, 2)
+        console.log("youtube result id",data)
+
+        let videoId = 1;
+        clientData.setex(videoId, 300, data);
+        app.get('/youtubeId/:id', cache, (req, res) => {
+          res.send(data);
+          console.log(data);
+        })
+      }
+    });
+
+
+  })
+}
 
 
 app.listen(PORT, console.log(`Server listening on port ${PORT}`))
+
+
+module.exports.analyzeImage = analyzeImage
+

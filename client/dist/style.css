@@ -1,0 +1,66 @@
+.bImage1 {
+    background-image: url('https://cdn.hipwallpaper.com/m/87/40/lFOGhX.jpg');
+    opacity: 0.5;
+
+}
+
+.mainChild1 {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    border: 1px solid grey;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.mainChild2 {
+    /* background-image: url('https://cdn1.thr.com/sites/default/files/imagecache/landscape_928x523/2011/06/tv_gallery_2_2011_a_l.jpg'); */
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    border: 1px solid grey;
+    width: 100%;
+    height: 450px;
+}
+
+/* .box1 {
+    width: 40%;
+    height: 40%;       
+}
+
+.box2 {
+    width: 40%;
+    height: 40%;       
+}
+
+.box3 {
+    width: 40%;
+    height: 40%;       
+}
+
+.box4 {
+    width: 40%;
+    height: 40%;       
+} */
+
+
+
+.pref-list {
+    width: 500px;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+
+
+
+.a {
+    display: flex;
+    flex-flow:  column wrap;
+    border: 1px solid grey;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+
+}
