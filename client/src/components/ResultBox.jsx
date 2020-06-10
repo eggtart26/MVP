@@ -1,7 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
-// const {  Tag, Divider  } = antd;
-// import { Tag } from 'antd';
 import axios from 'axios';
 
 class ResultBox extends React.Component {
@@ -26,7 +23,6 @@ class ResultBox extends React.Component {
             this.setState({
               foodItems: data,
             });
-            // console.log('fooditeem',this.state.foodItems)
           })
           .catch(this.handleError);
       }
@@ -37,7 +33,6 @@ class ResultBox extends React.Component {
             this.setState({
               foodItems: data,
             });
-            // console.log('fooditeem',this.state.foodItems)
           })
           .catch(this.handleError);
       }
@@ -45,8 +40,7 @@ class ResultBox extends React.Component {
 
 
     render() {
-        console.log('ffff',this.state.foodItems)
-        // if(this.state.foodItems !== []) {
+        // console.log('From Result Box',this.state.foodItems)
             const foods = this.state.foodItems.map((food,i) => {
                 return (
                     <div key={i}>
@@ -54,12 +48,7 @@ class ResultBox extends React.Component {
                     </div>
                 )
             })
-        // } 
-        // else {
-        //     const foods
-        // }
 
-        
         return (
             <div>
             <h3>Food Ingredients:</h3>

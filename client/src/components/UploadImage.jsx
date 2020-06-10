@@ -225,7 +225,10 @@ const UploadImage = () => {
       setFile(e.target.files[0]);
       setFilename(e.target.files[0].name);
     };
+    
   console.log('file',file)
+  console.log('uploadFile',uploadedFile)
+  
     const onSubmit = async e => {
       e.preventDefault();
       const formData = new FormData();
